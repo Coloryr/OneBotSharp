@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 图片
+/// </summary>
 public record MsgImage : MsgBase
 {
     [JsonIgnore]
@@ -16,16 +19,34 @@ public record MsgImage : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 图片文件名
+        /// </summary>
         [JsonProperty("file")]
         public string? File { get; set; }
+        /// <summary>
+        /// 图片类型，flash 表示闪照
+        /// </summary>
         [JsonProperty("type")]
         public string? Type { get; set; }
+        /// <summary>
+        /// 图片 URL
+        /// </summary>
         [JsonProperty("url")]
         public string? Url { get; set; }
+        /// <summary>
+        /// 是否使用已缓存的文件
+        /// </summary>
         [JsonProperty("cache")]
         public string? Cache { get; set; }
+        /// <summary>
+        /// 是否通过代理下载文件
+        /// </summary>
         [JsonProperty("proxy")]
         public string? Proxy { get; set; }
+        /// <summary>
+        /// 下载网络文件的超时时间
+        /// </summary>
         [JsonProperty("timeout")]
         public string? Timeout { get; set; }
     }
@@ -37,7 +58,7 @@ public record MsgImage : MsgBase
         {
             code.Datas.Add("file", Data.File);
         }
-        if (!string.IsNullOrWhiteSpace(Data.Type)) 
+        if (!string.IsNullOrWhiteSpace(Data.Type))
         {
             code.Datas.Add("type", Data.Type);
         }
@@ -81,7 +102,7 @@ public record MsgImage : MsgBase
         return new()
         {
             Data = new()
-            { 
+            {
                 File = "file:///" + Path.GetFullPath(file),
                 Type = flash ? Flash : null,
                 Cache = "1",
@@ -171,7 +192,7 @@ public record MsgImage : MsgBase
         return new()
         {
             Data = new()
-            { 
+            {
                 File = code["file"],
                 Type = code["type"],
                 Url = code["url"]

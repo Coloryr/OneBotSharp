@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 戳一戳
+/// </summary>
 public record MsgPoke : MsgBase
 {
     [JsonIgnore]
@@ -14,10 +17,19 @@ public record MsgPoke : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 类型
+        /// </summary>
         [JsonProperty("type")]
         public string? Type { get; set; }
+        /// <summary>
+        /// ID
+        /// </summary>
         [JsonProperty("id")]
         public string? Id { get; set; }
+        /// <summary>
+        /// 表情名
+        /// </summary>
         [JsonProperty("name")]
         public string? Name { get; set; }
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -22,7 +17,7 @@ public record MsgDice : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
-        
+
     }
 
     public override string BuildSendCq()
@@ -41,7 +36,7 @@ public record MsgDice : MsgBase
         {
             Data = new()
             {
-                
+
             }
         };
     }
@@ -57,7 +52,7 @@ public record MsgDice : MsgBase
         {
             Data = new()
             {
-                
+
             }
         };
     }

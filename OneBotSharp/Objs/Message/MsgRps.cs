@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 猜拳魔法表情
+/// </summary>
 public record MsgRps : MsgBase
 {
     [JsonIgnore]
@@ -19,7 +17,7 @@ public record MsgRps : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
-        
+
     }
 
     public override string BuildSendCq()
@@ -38,7 +36,7 @@ public record MsgRps : MsgBase
         {
             Data = new()
             {
-                
+
             }
         };
     }
@@ -54,7 +52,7 @@ public record MsgRps : MsgBase
         {
             Data = new()
             {
-                
+
             }
         };
     }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 语音
+/// </summary>
 public record MsgRecord : MsgBase
 {
     [JsonIgnore]
@@ -19,16 +17,34 @@ public record MsgRecord : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 语音文件名
+        /// </summary>
         [JsonProperty("file")]
         public string? File { get; set; }
+        /// <summary>
+        /// 设置为 1 表示变声
+        /// </summary>
         [JsonProperty("magic")]
         public string? Magic { get; set; }
+        /// <summary>
+        /// 语音 URL
+        /// </summary>
         [JsonProperty("url")]
         public string? Url { get; set; }
+        /// <summary>
+        /// 是否使用已缓存的文件
+        /// </summary>
         [JsonProperty("cache")]
         public string? Cache { get; set; }
+        /// <summary>
+        /// 是否通过代理下载文件
+        /// </summary>
         [JsonProperty("proxy")]
         public string? Proxy { get; set; }
+        /// <summary>
+        /// 下载网络文件的超时时间
+        /// </summary>
         [JsonProperty("timeout")]
         public string? Timeout { get; set; }
     }

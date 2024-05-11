@@ -8,7 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public abstract record MsgBase
 {
-    public static readonly Dictionary<string, 
+    public static readonly Dictionary<string,
         (Func<CqCode, MsgBase> Recv, Func<CqCode, MsgBase> Send)> CqParser = new()
     {
         { MsgFace.MsgType, (MsgFace.MsgRecvParse, MsgFace.MsgSendParse) },

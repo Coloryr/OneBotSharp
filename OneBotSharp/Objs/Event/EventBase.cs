@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Event;
@@ -11,24 +6,42 @@ namespace OneBotSharp.Objs.Event;
 public abstract record EventBase
 {
     [JsonIgnore]
-    public const string TypeMessage = "message";
+    public const string Message = "message";
     [JsonIgnore]
-    public const string TypeNotice = "notice";
+    public const string Notice = "notice";
     [JsonIgnore]
-    public const string TypeRequest = "request";
+    public const string Request = "request";
     [JsonIgnore]
-    public const string TypeMeta = "meta_event";
+    public const string Meta = "meta_event";
 
+    /// <summary>
+    /// 事件发生的时间戳
+    /// </summary>
     [JsonProperty("time")]
     public long Time { get; set; }
+    /// <summary>
+    /// 收到事件的机器人 QQ 号
+    /// </summary>
     [JsonProperty("self_id")]
     public long Id { get; set; }
+    /// <summary>
+    /// 上报类型
+    /// </summary>
     [JsonProperty("post_type")]
     public abstract string EventType { get; }
 
+    /// <summary>
+    /// 回复内容
+    /// </summary>
+    [JsonIgnore]
+    public object Reply { get; set; }
+
     public static readonly Dictionary<string, Func<JObject, EventBase?>> JsonParser = new()
     {
-        { TypeMessage, EventMessage.JsonParse },
+        { Message, EventMessage.JsonParse },
+        { Notice, EventNotice.JsonParse },
+        { Request, EventRequest.JsonParse },
+        { Meta, EventMeta.JsonParse },
     };
 
     /// <summary>

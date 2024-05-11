@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 回复
+/// </summary>
 public record MsgReply : MsgBase
 {
     [JsonIgnore]
@@ -19,6 +17,9 @@ public record MsgReply : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 回复时引用的消息 ID
+        /// </summary>
         [JsonProperty("id")]
         public string? Id { get; set; }
     }

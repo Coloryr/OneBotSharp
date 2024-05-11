@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 位置
+/// </summary>
 public record MsgLocation : MsgBase
 {
     [JsonIgnore]
@@ -19,12 +17,24 @@ public record MsgLocation : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 纬度
+        /// </summary>
         [JsonProperty("lat")]
         public string? Lat { get; set; }
+        /// <summary>
+        /// 经度
+        /// </summary>
         [JsonProperty("lon")]
         public string? Lon { get; set; }
+        /// <summary>
+        /// 发送时可选，标题
+        /// </summary>
         [JsonProperty("title")]
         public string? Title { get; set; }
+        /// <summary>
+        /// 发送时可选，内容描述
+        /// </summary>
         [JsonProperty("content")]
         public string? Content { get; set; }
     }

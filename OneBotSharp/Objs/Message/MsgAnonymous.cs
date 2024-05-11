@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -49,7 +44,7 @@ public record MsgAnonymous : MsgBase
         {
             Data = new()
             {
-                Ignore = ignore is { } 
+                Ignore = ignore is { }
                     ? ignore.Value ? 1 : 0 : null
             }
         };
@@ -66,7 +61,7 @@ public record MsgAnonymous : MsgBase
         {
             Data = new()
             {
-                
+
             }
         };
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace OneBotSharp.Objs.Event;
 
@@ -50,5 +45,32 @@ public record EventReply
         /// </summary>
         [JsonProperty("ban_duration")]
         public long Time { get; set; }
+    }
+
+    public record RequestFriend
+    {
+        /// <summary>
+        /// 是否同意请求
+        /// </summary>
+        [JsonProperty("approve")]
+        public bool Approve { get; set; }
+        /// <summary>
+        /// 添加后的好友备注
+        /// </summary>
+        [JsonProperty("remark")]
+        public string Remark { get; set; }
+    }
+    public record RequestGroup
+    {
+        /// <summary>
+        /// 是否同意请求
+        /// </summary>
+        [JsonProperty("approve")]
+        public bool Approve { get; set; }
+        /// <summary>
+        /// 拒绝理由
+        /// </summary>
+        [JsonProperty("reason")]
+        public string Reason { get; set; }
     }
 }

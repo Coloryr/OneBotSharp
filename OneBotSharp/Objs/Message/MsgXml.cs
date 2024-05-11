@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// XML 消息
+/// </summary>
 public record MsgXml : MsgBase
 {
     [JsonIgnore]
@@ -20,6 +19,9 @@ public record MsgXml : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// XML 内容
+        /// </summary>
         [JsonProperty("data")]
         public string? Data { get; set; }
     }

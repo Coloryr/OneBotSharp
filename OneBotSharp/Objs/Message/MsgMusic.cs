@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 音乐分享
+/// </summary>
 public record MsgMusic : MsgBase
 {
     [JsonIgnore]
@@ -27,19 +25,40 @@ public record MsgMusic : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 分享的类型
+        /// </summary>
         [JsonProperty("type")]
         public string? Type { get; set; }
+        /// <summary>
+        /// 歌曲 ID
+        /// </summary>
         [JsonProperty("id")]
         public string? Id { get; set; }
 
+        /// <summary>
+        /// 点击后跳转目标 URL
+        /// </summary>
         [JsonProperty("url")]
         public string? Url { get; set; }
+        /// <summary>
+        /// 音乐 URL
+        /// </summary>
         [JsonProperty("audio")]
         public string? Audio { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
         [JsonProperty("title")]
         public string? Title { get; set; }
+        /// <summary>
+        /// 发送时可选，内容描述
+        /// </summary>
         [JsonProperty("content")]
         public string? Content { get; set; }
+        /// <summary>
+        /// 发送时可选，图片 URL
+        /// </summary>
         [JsonProperty("image")]
         public string? Image { get; set; }
     }

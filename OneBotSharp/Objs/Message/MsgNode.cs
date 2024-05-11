@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
 
+/// <summary>
+/// 合并转发自定义节点
+/// </summary>
 public record MsgNode : MsgBase
 {
     [JsonIgnore]
@@ -19,10 +17,19 @@ public record MsgNode : MsgBase
     public MsgData Data { get; set; }
     public record MsgData
     {
+        /// <summary>
+        /// 转发的消息 ID
+        /// </summary>
         [JsonProperty("id")]
         public string? Id { get; set; }
+        /// <summary>
+        /// 发送者 QQ 号
+        /// </summary>
         [JsonProperty("user_id")]
         public string? UserId { get; set; }
+        /// <summary>
+        /// 发送者昵称
+        /// </summary>
         [JsonProperty("nickname")]
         public string? NickName { get; set; }
         /// <summary>
@@ -32,6 +39,9 @@ public record MsgNode : MsgBase
         public object? Content { get; set; }
     }
 
+    /// <summary>
+    /// 消息内容
+    /// </summary>
     [JsonIgnore]
     public List<MsgBase> Messages { get; init; } = [];
 

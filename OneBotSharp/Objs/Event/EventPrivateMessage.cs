@@ -1,27 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Event;
 
 public record EventPrivateMessage : EventMessage
 {
-    public override string MessageType => TypeMessagePrivate;
+    public override string MessageType => MessagePrivate;
 
+    /// <summary>
+    /// 发送人信息
+    /// </summary>
     [JsonProperty("sender")]
     public EventSender Sender { get; set; }
     public record EventSender
     {
+        /// <summary>
+        /// 发送者 QQ 号
+        /// </summary>
         [JsonProperty("user_id")]
         public long UserId { get; set; }
+        /// <summary>
+        /// 昵称
+        /// </summary>
         [JsonProperty("nickname")]
         public string NickName { get; set; }
+        /// <summary>
+        /// 性别
+        /// </summary>
         [JsonProperty("sex")]
         public string Sex { get; set; }
+        /// <summary>
+        /// 年龄
+        /// </summary>
         [JsonProperty("age")]
         public int Age { get; set; }
     }

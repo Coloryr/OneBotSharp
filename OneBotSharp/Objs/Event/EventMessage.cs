@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OneBotSharp.Objs.Message;
 
@@ -12,27 +7,65 @@ namespace OneBotSharp.Objs.Event;
 public abstract record EventMessage : EventBase
 {
     [JsonIgnore]
-    public const string TypeMessagePrivate = "private";
+    public const string MessagePrivate = "private";
     [JsonIgnore]
-    public const string TypeMessageGroup = "group";
+    public const string MessageGroup = "group";
 
-    public override string EventType => TypeMessage;
+    [JsonIgnore]
+    public const string SexMale = "male";
+    [JsonIgnore]
+    public const string SexFemale = "female";
+    [JsonIgnore]
+    public const string SexUnknown = "unknown";
 
+    [JsonIgnore]
+    public const string RoleOwner = "owner";
+    [JsonIgnore]
+    public const string RoleAdmin = "admin";
+    [JsonIgnore]
+    public const string RoleMember = "member";
+
+    public override string EventType => EventBase.Message;
+
+    /// <summary>
+    /// 消息类型
+    /// </summary>
     [JsonProperty("message_type")]
     public abstract string MessageType { get; }
+    /// <summary>
+    /// 消息子类型
+    /// </summary>
     [JsonProperty("sub_type")]
     public string? SubType { get; set; }
+    /// <summary>
+    /// 消息 ID
+    /// </summary>
     [JsonProperty("message_id")]
     public int MessageId { get; set; }
+    /// <summary>
+    /// 发送者 QQ 号
+    /// </summary>
     [JsonProperty("user_id")]
     public int UserId { get; set; }
+    /// <summary>
+    /// 不要改这个，从Messages获取 
+    /// </summary>
     [JsonProperty("message")]
     public object Message { get; set; }
+    /// <summary>
+    /// 原始消息内容
+    /// </summary>
     [JsonProperty("raw_message")]
     public string RawMessage { get; set; }
+    /// <summary>
+    /// 字体
+    /// </summary>
     [JsonProperty("font")]
     public int Font { get; set; }
 
+    /// <summary>
+    /// 消息内容
+    /// </summary>
     [JsonIgnore]
     public List<MsgBase> Messages = [];
 
@@ -58,7 +91,8 @@ public abstract record EventMessage : EventBase
 
     public static new readonly Dictionary<string, Func<JObject, EventMessage?>> JsonParser = new()
     {
-        { TypeMessagePrivate, EventPrivateMessage.JsonParse },
+        { MessagePrivate, EventPrivateMessage.JsonParse },
+        { MessageGroup, EventGroupMessage.JsonParse },
     };
 
     public static EventMessage? JsonParse(JObject obj)

@@ -29,7 +29,7 @@ public record MsgText : MsgBase
 
     public static MsgText? JsonParse(JObject text, bool send)
     {
-        return text.ToObject<MsgText>(); 
+        return text.ToObject<MsgText>();
     }
 
     public static MsgText Build(string text)
@@ -37,7 +37,7 @@ public record MsgText : MsgBase
         return new()
         {
             Data = new()
-            { 
+            {
                 Text = text
             }
         };

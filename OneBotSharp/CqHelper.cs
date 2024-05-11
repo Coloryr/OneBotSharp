@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using OneBotSharp.Objs.Message;
 
 namespace OneBotSharp;
@@ -47,7 +43,7 @@ public static class CqHelper
     public static List<MsgBase> ParseMsg(string data, bool send = false)
     {
         var list = new List<MsgBase>();
-        bool cq =false;
+        bool cq = false;
         for (int now = 0; now < data.Length;)
         {
             var index = data.IndexOf("[CQ:", now);
@@ -69,7 +65,7 @@ public static class CqHelper
 
                 var cqcode = data[now..(index1 + 1)];
                 var code = CqCode.Parse(cqcode);
-                var msg = send ? MsgBase.ParseSend(code) 
+                var msg = send ? MsgBase.ParseSend(code)
                     : MsgBase.ParseRecv(code);
                 if (msg != null)
                 {
