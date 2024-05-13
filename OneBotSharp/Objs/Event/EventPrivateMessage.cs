@@ -5,7 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventPrivateMessage : EventMessage
 {
-    public override string MessageType => MessagePrivate;
+    public override string EventMessageType => Enums.MessageType.Private;
 
     /// <summary>
     /// 发送人信息

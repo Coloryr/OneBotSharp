@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgNode : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "node";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Node;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -103,19 +100,19 @@ public record MsgNode : MsgBase
         };
     }
 
-    public static MsgNode MsgRecvParse(CqCode code)
+    public static MsgNode RecvParse(CqCode code)
     {
         return Parse(code, false);
     }
 
-    public static MsgNode MsgSendParse(CqCode code)
+    public static MsgNode SendParse(CqCode code)
     {
         return Parse(code, true);
     }
 
     private static MsgNode Parse(CqCode code, bool send)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Node)
         {
             throw new ArgumentException("cqcode type error");
         }

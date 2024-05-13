@@ -10,10 +10,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgXml : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "xml";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Xml;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -61,9 +58,9 @@ public record MsgXml : MsgBase
         };
     }
 
-    public static MsgXml MsgRecvParse(CqCode code)
+    public static MsgXml RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Xml)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -77,9 +74,9 @@ public record MsgXml : MsgBase
         };
     }
 
-    public static MsgXml MsgSendParse(CqCode code)
+    public static MsgXml SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgXml? JsonParse(JObject text, bool send)

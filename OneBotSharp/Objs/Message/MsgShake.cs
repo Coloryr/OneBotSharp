@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgShake : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "shake";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Shake;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -41,9 +38,9 @@ public record MsgShake : MsgBase
         };
     }
 
-    public static MsgShake MsgRecvParse(CqCode code)
+    public static MsgShake RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Shake)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -57,9 +54,9 @@ public record MsgShake : MsgBase
         };
     }
 
-    public static MsgShake MsgSendParse(CqCode code)
+    public static MsgShake SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgShake? JsonParse(JObject text, bool send)

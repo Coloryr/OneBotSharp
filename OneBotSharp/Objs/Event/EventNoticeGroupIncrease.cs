@@ -8,12 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupIncrease : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypeApprove = "approve";
-    [JsonIgnore]
-    public const string SubTypeInvite = "invite";
-
-    public override string NoticeType => NoticeGroupIncrease;
+    public override string NoticeType => Enums.NoticeType.GroupIncrease;
 
     /// <summary>
     /// 事件子类型

@@ -12,7 +12,7 @@ public record EventReply
         [JsonProperty("reply")]
         public object Message { get; set; }
         /// <summary>
-        /// 不解析 CQ 码
+        /// 解析 CQ 码
         /// </summary>
         [JsonProperty("auto_escape")]
         public bool Escape { get; set; }

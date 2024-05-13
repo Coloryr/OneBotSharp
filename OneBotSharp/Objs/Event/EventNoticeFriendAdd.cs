@@ -7,7 +7,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeFriendAdd : EventNotice
 {
-    public override string NoticeType => NoticeFriendAdd;
+    public override string NoticeType => Enums.NoticeType.FriendAdd;
 
     public static new EventNoticeFriendAdd? JsonParse(JObject obj)
     {

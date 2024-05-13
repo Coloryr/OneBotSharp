@@ -5,28 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public abstract record EventNotice : EventBase
 {
-    [JsonIgnore]
-    public const string NoticeGroupUpload = "group_upload";
-    [JsonIgnore]
-    public const string NoticeGroupAdmin = "group_admin";
-    [JsonIgnore]
-    public const string NoticeGroupDecrease = "group_decrease";
-    [JsonIgnore]
-    public const string NoticeGroupIncrease = "group_increase";
-    [JsonIgnore]
-    public const string NoticeGroupBan = "group_ban";
-    [JsonIgnore]
-    public const string NoticeFriendAdd = "friend_add";
-    [JsonIgnore]
-    public const string NoticeGroupRecall = "group_recall";
-    [JsonIgnore]
-    public const string NoticeFriendRecall = "friend_recall";
-    [JsonIgnore]
-    public const string NoticeGroupNotify = "notify";
-    [JsonIgnore]
-    public const string NoticeGroupLuckyKing = "lucky_king";
-
-    public override string EventType => Notice;
+    public override string PostType => Enums.EventType.Notice;
 
     [JsonProperty("notice_type")]
     public abstract string NoticeType { get; }
@@ -39,16 +18,16 @@ public abstract record EventNotice : EventBase
 
     public static new readonly Dictionary<string, Func<JObject, EventNotice?>> JsonParser = new()
     {
-        { NoticeGroupUpload, EventNoticeGroupUpload.JsonParse },
-        { NoticeGroupAdmin, EventNoticeGroupAdmin.JsonParse },
-        { NoticeGroupDecrease, EventNoticeGroupDecrease.JsonParse },
-        { NoticeGroupIncrease, EventNoticeGroupIncrease.JsonParse },
-        { NoticeGroupBan, EventNoticeGroupBan.JsonParse },
-        { NoticeFriendAdd, EventNoticeFriendAdd.JsonParse },
-        { NoticeGroupRecall, EventNoticeGroupRecall.JsonParse },
-        { NoticeFriendRecall, EventNoticeFriendRecall.JsonParse },
-        { NoticeGroupNotify, EventNoticeGroupNotify.JsonParse },
-        { NoticeGroupLuckyKing, EventNoticeGroupLuckyKing.JsonParse }
+        { Enums.NoticeType.GroupUpload, EventNoticeGroupUpload.JsonParse },
+        { Enums.NoticeType.GroupAdmin, EventNoticeGroupAdmin.JsonParse },
+        { Enums.NoticeType.GroupDecrease, EventNoticeGroupDecrease.JsonParse },
+        { Enums.NoticeType.GroupIncrease, EventNoticeGroupIncrease.JsonParse },
+        { Enums.NoticeType.GroupBan, EventNoticeGroupBan.JsonParse },
+        { Enums.NoticeType.FriendAdd, EventNoticeFriendAdd.JsonParse },
+        { Enums.NoticeType.GroupRecall, EventNoticeGroupRecall.JsonParse },
+        { Enums.NoticeType.FriendRecall, EventNoticeFriendRecall.JsonParse },
+        { Enums.NoticeType.GroupNotify, EventNoticeGroupNotify.JsonParse },
+        { Enums.NoticeType.GroupLuckyKing, EventNoticeGroupLuckyKing.JsonParse }
     };
 
     public static EventNotice? JsonParse(JObject obj)

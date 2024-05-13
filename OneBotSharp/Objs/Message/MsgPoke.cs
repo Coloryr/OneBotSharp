@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgPoke : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "poke";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Poke;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -56,9 +53,9 @@ public record MsgPoke : MsgBase
         };
     }
 
-    public static MsgPoke MsgRecvParse(CqCode code)
+    public static MsgPoke RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Poke)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -74,9 +71,9 @@ public record MsgPoke : MsgBase
         };
     }
 
-    public static MsgPoke MsgSendParse(CqCode code)
+    public static MsgPoke SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Poke)
         {
             throw new ArgumentException("cqcode type error");
         }

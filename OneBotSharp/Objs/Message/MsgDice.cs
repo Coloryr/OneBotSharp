@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgDice : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "dice";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Dice;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -41,9 +38,9 @@ public record MsgDice : MsgBase
         };
     }
 
-    public static MsgDice MsgRecvParse(CqCode code)
+    public static MsgDice RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Dice)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -57,9 +54,9 @@ public record MsgDice : MsgBase
         };
     }
 
-    public static MsgDice MsgSendParse(CqCode code)
+    public static MsgDice SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgDice? JsonParse(JObject text, bool send)

@@ -5,7 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventGroupMessage : EventMessage
 {
-    public override string MessageType => MessageGroup;
+    public override string EventMessageType => Enums.MessageType.Group;
 
     /// <summary>
     /// 发送人信息

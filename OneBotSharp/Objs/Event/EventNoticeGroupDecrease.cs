@@ -8,14 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupDecrease : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypeLeave = "leave";
-    [JsonIgnore]
-    public const string SubTypeKick = "kick";
-    [JsonIgnore]
-    public const string SubTypeKickMe = "kick_me";
-
-    public override string NoticeType => NoticeGroupDecrease;
+    public override string NoticeType => Enums.NoticeType.GroupDecrease;
 
     /// <summary>
     /// 事件子类型

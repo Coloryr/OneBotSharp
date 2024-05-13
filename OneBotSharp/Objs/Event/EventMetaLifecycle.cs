@@ -5,16 +5,18 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventMetaLifecycle : EventMeta
 {
-    [JsonIgnore]
-    public const string SubTypeEnable = "enable";
-    [JsonIgnore]
-    public const string SubTypeDisable = "disable";
-    [JsonIgnore]
-    public const string SubTypeConnect = "connect";
-    public override string MetaEventType => MetaLifecycle;
+    public override string MetaEventType => Enums.MetaType.Lifecycle;
 
     [JsonProperty("sub_type")]
     public string SubType { get; set; }
+
+    public static EventMetaLifecycle Build(string type)
+    {
+        return new EventMetaLifecycle()
+        {
+            SubType = type
+        };
+    }
 
     public static new EventMetaLifecycle? JsonParse(JObject obj)
     {

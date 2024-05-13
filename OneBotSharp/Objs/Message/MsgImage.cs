@@ -8,12 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgImage : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "image";
-    [JsonIgnore]
-    public const string Flash = "flash";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Image;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -104,7 +99,7 @@ public record MsgImage : MsgBase
             Data = new()
             {
                 File = "file:///" + Path.GetFullPath(file),
-                Type = flash ? Flash : null,
+                Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
             }
@@ -118,7 +113,7 @@ public record MsgImage : MsgBase
             Data = new()
             {
                 File = url,
-                Type = flash ? Flash : null,
+                Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
             }
@@ -132,7 +127,7 @@ public record MsgImage : MsgBase
             Data = new()
             {
                 File = "base64://" + data,
-                Type = flash ? Flash : null,
+                Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
             }
@@ -146,7 +141,7 @@ public record MsgImage : MsgBase
             Data = new()
             {
                 File = "base64://" + Convert.ToBase64String(data),
-                Type = flash ? Flash : null,
+                Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
             }
@@ -162,7 +157,7 @@ public record MsgImage : MsgBase
             Data = new()
             {
                 File = "base64://" + Convert.ToBase64String(mem.ToArray()),
-                Type = flash ? Flash : null,
+                Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
             }
@@ -177,14 +172,14 @@ public record MsgImage : MsgBase
             {
                 File = file,
                 Url = url,
-                Type = flash ? Flash : null
+                Type = flash ? Enums.ImageType.Flash : null
             }
         };
     }
 
-    public static MsgImage MsgRecvParse(CqCode code)
+    public static MsgImage RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Image)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -200,9 +195,9 @@ public record MsgImage : MsgBase
         };
     }
 
-    public static MsgImage MsgSendParse(CqCode code)
+    public static MsgImage SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Image)
         {
             throw new ArgumentException("cqcode type error");
         }

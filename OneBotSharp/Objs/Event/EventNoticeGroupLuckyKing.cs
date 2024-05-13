@@ -5,7 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventNoticeGroupLuckyKing : EventNotice
 {
-    public override string NoticeType => NoticeGroupLuckyKing;
+    public override string NoticeType => Enums.NoticeType.GroupLuckyKing;
 
     /// <summary>
     /// 群号

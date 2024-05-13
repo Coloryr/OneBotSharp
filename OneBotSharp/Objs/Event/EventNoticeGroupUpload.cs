@@ -8,7 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupUpload : EventNotice
 {
-    public override string NoticeType => NoticeGroupUpload;
+    public override string NoticeType => Enums.NoticeType.GroupUpload;
 
     /// <summary>
     /// 群号

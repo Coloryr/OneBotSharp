@@ -9,7 +9,7 @@ public static class EventHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="message">消息</param>
-    /// <param name="cqcpde">不解析CQ码</param>
+    /// <param name="cqcpde">解析CQ码</param>
     public static void BuildReply(this EventPrivateMessage obj, string message, bool cqcpde = false)
     {
         obj.Reply = new EventReply.Private()

@@ -5,15 +5,6 @@ namespace OneBotSharp.Objs.Event;
 
 public abstract record EventBase
 {
-    [JsonIgnore]
-    public const string Message = "message";
-    [JsonIgnore]
-    public const string Notice = "notice";
-    [JsonIgnore]
-    public const string Request = "request";
-    [JsonIgnore]
-    public const string Meta = "meta_event";
-
     /// <summary>
     /// 事件发生的时间戳
     /// </summary>
@@ -28,7 +19,7 @@ public abstract record EventBase
     /// 上报类型
     /// </summary>
     [JsonProperty("post_type")]
-    public abstract string EventType { get; }
+    public abstract string PostType { get; }
 
     /// <summary>
     /// 回复内容
@@ -38,10 +29,10 @@ public abstract record EventBase
 
     public static readonly Dictionary<string, Func<JObject, EventBase?>> JsonParser = new()
     {
-        { Message, EventMessage.JsonParse },
-        { Notice, EventNotice.JsonParse },
-        { Request, EventRequest.JsonParse },
-        { Meta, EventMeta.JsonParse },
+        { Enums.EventType.Message, EventMessage.JsonParse },
+        { Enums.EventType.Notice, EventNotice.JsonParse },
+        { Enums.EventType.Request, EventRequest.JsonParse },
+        { Enums.EventType.Meta, EventMeta.JsonParse },
     };
 
     /// <summary>

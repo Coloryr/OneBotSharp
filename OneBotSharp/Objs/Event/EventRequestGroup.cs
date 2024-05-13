@@ -5,12 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventRequestGroup : EventRequest
 {
-    [JsonIgnore]
-    public const string SubTypeAdd = "add";
-    [JsonIgnore]
-    public const string SubTypeInvite = "invite";
-
-    public override string RequestType => RequestGroup;
+    public override string RequestType => Enums.RequestType.Group;
 
     /// <summary>
     /// 群号

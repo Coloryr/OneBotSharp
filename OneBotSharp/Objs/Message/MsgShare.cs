@@ -5,10 +5,7 @@ namespace OneBotSharp.Objs.Message;
 
 public record MsgShare : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "share";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Share;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -66,9 +63,9 @@ public record MsgShare : MsgBase
         };
     }
 
-    public static MsgShare MsgRecvParse(CqCode code)
+    public static MsgShare RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Share)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -85,9 +82,9 @@ public record MsgShare : MsgBase
         };
     }
 
-    public static MsgShare MsgSendParse(CqCode code)
+    public static MsgShare SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgShare? JsonParse(JObject text, bool send)

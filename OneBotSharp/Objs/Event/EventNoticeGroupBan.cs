@@ -5,12 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventNoticeGroupBan : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypeBan = "ban";
-    [JsonIgnore]
-    public const string SubTypeLiftBan = "lift_ban";
-
-    public override string NoticeType => NoticeGroupBan;
+    public override string NoticeType => Enums.NoticeType.GroupBan;
 
     /// <summary>
     /// 事件子类型

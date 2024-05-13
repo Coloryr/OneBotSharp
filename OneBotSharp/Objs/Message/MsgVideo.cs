@@ -5,10 +5,7 @@ namespace OneBotSharp.Objs.Message;
 
 public record MsgVideo : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "video";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Video;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -120,9 +117,9 @@ public record MsgVideo : MsgBase
         };
     }
 
-    public static MsgVideo MsgRecvParse(CqCode code)
+    public static MsgVideo RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Video)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -137,9 +134,9 @@ public record MsgVideo : MsgBase
         };
     }
 
-    public static MsgVideo MsgSendParse(CqCode code)
+    public static MsgVideo SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Video)
         {
             throw new ArgumentException("cqcode type error");
         }

@@ -8,7 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeFriendRecall : EventNotice
 {
-    public override string NoticeType => NoticeFriendRecall;
+    public override string NoticeType => Enums.NoticeType.FriendRecall;
 
     /// <summary>
     /// 被撤回的消息 ID

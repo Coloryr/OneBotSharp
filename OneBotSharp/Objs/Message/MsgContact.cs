@@ -8,14 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgContact : MsgBase
 {
-    [JsonIgnore]
-    public const string Friend = "qq";
-    [JsonIgnore]
-    public const string Group = "group";
-    [JsonIgnore]
-    public const string MsgType = "contact";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Contact;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -47,7 +40,7 @@ public record MsgContact : MsgBase
         {
             Data = new()
             {
-                Type = Friend,
+                Type = Enums.ContactType.Friend,
                 Id = id
             }
         };
@@ -59,15 +52,15 @@ public record MsgContact : MsgBase
         {
             Data = new()
             {
-                Type = Group,
+                Type = Enums.ContactType.Group,
                 Id = id
             }
         };
     }
 
-    public static MsgContact MsgRecvParse(CqCode code)
+    public static MsgContact RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Contact)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -82,9 +75,9 @@ public record MsgContact : MsgBase
         };
     }
 
-    public static MsgContact MsgSendParse(CqCode code)
+    public static MsgContact SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgContact? JsonParse(JObject text, bool send)

@@ -5,9 +5,7 @@ namespace OneBotSharp.Objs.Message;
 
 public record MsgText : MsgBase
 {
-    public const string MsgType = "text";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Text;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }

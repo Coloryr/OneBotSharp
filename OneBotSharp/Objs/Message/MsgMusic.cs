@@ -8,18 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgMusic : MsgBase
 {
-    [JsonIgnore]
-    public const string MusicQQ = "qq";
-    [JsonIgnore]
-    public const string Music163 = "163";
-    [JsonIgnore]
-    public const string MusicXM = "xm";
-    [JsonIgnore]
-    public const string MusicCustom = "custom";
-    [JsonIgnore]
-    public const string MsgType = "music";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Music;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -65,12 +54,21 @@ public record MsgMusic : MsgBase
 
     public override string BuildSendCq()
     {
-        if (Data.Type == MusicCustom)
+        if (Data.Type == Enums.MusicType.Custom)
         {
             var code = new CqCode { Type = Type };
-            code.Datas.Add("url", Data.Url);
-            code.Datas.Add("audio", Data.Audio);
-            code.Datas.Add("title", Data.Title);
+            if (!string.IsNullOrWhiteSpace(Data.Url))
+            {
+                code.Datas.Add("url", Data.Url);
+            }
+            if (!string.IsNullOrWhiteSpace(Data.Audio))
+            {
+                code.Datas.Add("audio", Data.Audio);
+            }
+            if (!string.IsNullOrWhiteSpace(Data.Title))
+            {
+                code.Datas.Add("title", Data.Title);
+            }
             if (!string.IsNullOrWhiteSpace(Data.Content))
             {
                 code.Datas.Add("content", Data.Content);
@@ -94,7 +92,7 @@ public record MsgMusic : MsgBase
         {
             Data = new()
             {
-                Type = MusicQQ,
+                Type = Enums.MusicType.QQ,
                 Id = id
             }
         };
@@ -106,7 +104,7 @@ public record MsgMusic : MsgBase
         {
             Data = new()
             {
-                Type = Music163,
+                Type = Enums.MusicType.N163,
                 Id = id
             }
         };
@@ -118,7 +116,7 @@ public record MsgMusic : MsgBase
         {
             Data = new()
             {
-                Type = MusicXM,
+                Type = Enums.MusicType.XM,
                 Id = id
             }
         };
@@ -130,7 +128,7 @@ public record MsgMusic : MsgBase
         {
             Data = new()
             {
-                Type = MusicCustom,
+                Type = Enums.MusicType.Custom,
                 Url = url,
                 Audio = audio,
                 Title = title,
@@ -140,20 +138,20 @@ public record MsgMusic : MsgBase
         };
     }
 
-    public static MsgMusic MsgRecvParse(CqCode code)
+    public static MsgMusic RecvParse(CqCode code)
     {
         throw new Exception("can not decode recv msg music");
     }
 
-    public static MsgMusic MsgSendParse(CqCode code)
+    public static MsgMusic SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Music)
         {
             throw new ArgumentException("cqcode type error");
         }
 
         var type = code["type"];
-        if (type == MusicCustom)
+        if (type == Enums.MusicType.Custom)
         {
             return new()
             {

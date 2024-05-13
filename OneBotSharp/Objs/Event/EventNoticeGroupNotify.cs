@@ -9,19 +9,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupNotify : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypePoke = "poke";
-    [JsonIgnore]
-    public const string SubTypeHonor = "honor";
-
-    [JsonIgnore]
-    public const string HonorTypeTalkative = "talkative";
-    [JsonIgnore]
-    public const string HonorTypePerformer = "performer";
-    [JsonIgnore]
-    public const string HonorTypeEmotion = "emotion";
-
-    public override string NoticeType => NoticeGroupNotify;
+    public override string NoticeType => Enums.NoticeType.GroupNotify;
 
     /// <summary>
     /// 提示类型

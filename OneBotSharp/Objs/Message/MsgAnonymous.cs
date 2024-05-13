@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgAnonymous : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "anonymous";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Anonymous;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -50,9 +47,9 @@ public record MsgAnonymous : MsgBase
         };
     }
 
-    public static MsgAnonymous MsgRecvParse(CqCode code)
+    public static MsgAnonymous RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Anonymous)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -66,9 +63,9 @@ public record MsgAnonymous : MsgBase
         };
     }
 
-    public static MsgAnonymous MsgSendParse(CqCode code)
+    public static MsgAnonymous SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Anonymous)
         {
             throw new ArgumentException("cqcode type error");
         }

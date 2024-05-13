@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgJson : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "json";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Json;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -58,7 +55,7 @@ public record MsgJson : MsgBase
 
     public static MsgJson MsgRecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Json)
         {
             throw new ArgumentException("cqcode type error");
         }

@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgLocation : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "location";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Location;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -80,9 +77,9 @@ public record MsgLocation : MsgBase
         };
     }
 
-    public static MsgLocation MsgRecvParse(CqCode code)
+    public static MsgLocation RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Location)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -102,9 +99,9 @@ public record MsgLocation : MsgBase
         };
     }
 
-    public static MsgLocation MsgSendParse(CqCode code)
+    public static MsgLocation SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgLocation? JsonParse(JObject text, bool send)

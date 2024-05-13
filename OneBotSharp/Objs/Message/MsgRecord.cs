@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgRecord : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "record";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Record;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -177,9 +174,9 @@ public record MsgRecord : MsgBase
         };
     }
 
-    public static MsgRecord MsgRecvParse(CqCode code)
+    public static MsgRecord RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Record)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -195,9 +192,9 @@ public record MsgRecord : MsgBase
         };
     }
 
-    public static MsgRecord MsgSendParse(CqCode code)
+    public static MsgRecord SendParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Record)
         {
             throw new ArgumentException("cqcode type error");
         }

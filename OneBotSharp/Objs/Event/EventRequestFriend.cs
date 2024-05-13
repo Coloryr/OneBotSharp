@@ -4,7 +4,7 @@ namespace OneBotSharp.Objs.Event;
 
 public record EventRequestFriend : EventRequest
 {
-    public override string RequestType => RequestFriend;
+    public override string RequestType => Enums.RequestType.Friend;
 
     public static new EventRequestFriend? JsonParse(JObject obj)
     {

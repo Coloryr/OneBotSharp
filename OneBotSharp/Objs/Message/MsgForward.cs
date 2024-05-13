@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgForward : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "forward";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Forward;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -21,7 +18,7 @@ public record MsgForward : MsgBase
         /// 合并转发 ID，需通过 get_forward_msg API 获取具体内容
         /// </summary>
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
     }
 
     public override string BuildSendCq()
@@ -45,9 +42,9 @@ public record MsgForward : MsgBase
         };
     }
 
-    public static MsgForward MsgRecvParse(CqCode code)
+    public static MsgForward RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Forward)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -61,9 +58,9 @@ public record MsgForward : MsgBase
         };
     }
 
-    public static MsgForward MsgSendParse(CqCode code)
+    public static MsgForward SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgForward? JsonParse(JObject text, bool send)

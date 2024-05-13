@@ -8,12 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupRecall : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypeSet = "set";
-    [JsonIgnore]
-    public const string SubTypeUnset = "unset";
-
-    public override string NoticeType => NoticeGroupRecall;
+    public override string NoticeType => Enums.NoticeType.GroupRecall;
 
     /// <summary>
     /// 群号

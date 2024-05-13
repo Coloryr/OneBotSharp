@@ -8,10 +8,7 @@ namespace OneBotSharp.Objs.Message;
 /// </summary>
 public record MsgFace : MsgBase
 {
-    [JsonIgnore]
-    public const string MsgType = "face";
-
-    public override string Type => MsgType;
+    public override string Type => Enums.MsgType.Face;
 
     [JsonProperty("data")]
     public MsgData Data { get; set; }
@@ -34,9 +31,9 @@ public record MsgFace : MsgBase
         return BuildSendCq();
     }
 
-    public static MsgFace MsgRecvParse(CqCode code)
+    public static MsgFace RecvParse(CqCode code)
     {
-        if (code.Type != MsgType)
+        if (code.Type != Enums.MsgType.Face)
         {
             throw new ArgumentException("cqcode type error");
         }
@@ -50,9 +47,9 @@ public record MsgFace : MsgBase
         };
     }
 
-    public static MsgFace MsgSendParse(CqCode code)
+    public static MsgFace SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
     public static MsgFace? JsonParse(JObject text, bool send)

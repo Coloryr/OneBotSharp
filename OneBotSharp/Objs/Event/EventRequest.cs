@@ -5,12 +5,7 @@ namespace OneBotSharp.Objs.Event;
 
 public abstract record EventRequest : EventBase
 {
-    [JsonIgnore]
-    public const string RequestFriend = "friend";
-    [JsonIgnore]
-    public const string RequestGroup = "group";
-
-    public override string EventType => Request;
+    public override string PostType => Enums.EventType.Request;
 
     [JsonProperty("request_type")]
     public abstract string RequestType { get; }
@@ -33,8 +28,8 @@ public abstract record EventRequest : EventBase
 
     public static new readonly Dictionary<string, Func<JObject, EventRequest?>> JsonParser = new()
     {
-        { RequestFriend, EventRequestFriend.JsonParse },
-        { RequestGroup, EventRequestGroup.JsonParse }
+        { Enums.RequestType.Friend, EventRequestFriend.JsonParse },
+        { Enums.RequestType.Group, EventRequestGroup.JsonParse }
     };
 
     public static EventRequest? JsonParse(JObject obj)

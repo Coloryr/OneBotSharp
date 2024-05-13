@@ -8,12 +8,7 @@ namespace OneBotSharp.Objs.Event;
 /// </summary>
 public record EventNoticeGroupAdmin : EventNotice
 {
-    [JsonIgnore]
-    public const string SubTypeSet = "set";
-    [JsonIgnore]
-    public const string SubTypeUnset = "unset";
-
-    public override string NoticeType => NoticeGroupAdmin;
+    public override string NoticeType => Enums.NoticeType.GroupAdmin;
 
     /// <summary>
     /// 群号
@@ -25,6 +20,15 @@ public record EventNoticeGroupAdmin : EventNotice
     /// </summary>
     [JsonProperty("sub_type")]
     public string SubType { get; set; }
+
+    public static EventNoticeGroupAdmin Build(long group, string type)
+    {
+        return new()
+        {
+            GroupId = group,
+            SubType = type
+        };
+    }
 
     public static new EventNoticeGroupAdmin? JsonParse(JObject obj)
     {

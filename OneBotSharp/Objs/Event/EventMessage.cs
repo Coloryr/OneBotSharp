@@ -6,32 +6,13 @@ namespace OneBotSharp.Objs.Event;
 
 public abstract record EventMessage : EventBase
 {
-    [JsonIgnore]
-    public const string MessagePrivate = "private";
-    [JsonIgnore]
-    public const string MessageGroup = "group";
-
-    [JsonIgnore]
-    public const string SexMale = "male";
-    [JsonIgnore]
-    public const string SexFemale = "female";
-    [JsonIgnore]
-    public const string SexUnknown = "unknown";
-
-    [JsonIgnore]
-    public const string RoleOwner = "owner";
-    [JsonIgnore]
-    public const string RoleAdmin = "admin";
-    [JsonIgnore]
-    public const string RoleMember = "member";
-
-    public override string EventType => EventBase.Message;
+    public override string PostType => Enums.EventType.Message;
 
     /// <summary>
     /// 消息类型
     /// </summary>
     [JsonProperty("message_type")]
-    public abstract string MessageType { get; }
+    public abstract string EventMessageType { get; }
     /// <summary>
     /// 消息子类型
     /// </summary>
@@ -91,8 +72,8 @@ public abstract record EventMessage : EventBase
 
     public static new readonly Dictionary<string, Func<JObject, EventMessage?>> JsonParser = new()
     {
-        { MessagePrivate, EventPrivateMessage.JsonParse },
-        { MessageGroup, EventGroupMessage.JsonParse },
+        { Enums.MessageType.Private, EventPrivateMessage.JsonParse },
+        { Enums.MessageType.Group, EventGroupMessage.JsonParse },
     };
 
     public static EventMessage? JsonParse(JObject obj)
