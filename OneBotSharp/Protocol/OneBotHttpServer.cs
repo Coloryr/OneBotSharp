@@ -19,7 +19,7 @@ using HttpVersion = DotNetty.Codecs.Http.HttpVersion;
 
 namespace OneBotSharp.Protocol;
 
-public class OneBotHttpPost : IOneBotClient, IRecvServer
+public class OneBotHttpServer : IOneBotClient, IRecvServer
 {
     private readonly IEventLoopGroup _group;
     private readonly IEventLoopGroup _workGroup;
@@ -30,7 +30,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
 
     public event Action<EventBase>? EventRecv;
 
-    public OneBotHttpPost(string url, string? key = null) : base(url, key)
+    public OneBotHttpServer(string url, string? key = null) : base(url, key)
     {
         if (Url == null)
         {
@@ -110,7 +110,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
         _bootstrapChannel = await _bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(uri.Host), uri.Port));
     }
 
-    private class OneBotServerHandler(OneBotHttpPost bot) : ChannelHandlerAdapter
+    private class OneBotServerHandler(OneBotHttpServer bot) : ChannelHandlerAdapter
     {
         static readonly AsciiString TypeJson = AsciiString.Cached("application/json");
         static readonly AsciiString ServerName = AsciiString.Cached("OntBotSharp");

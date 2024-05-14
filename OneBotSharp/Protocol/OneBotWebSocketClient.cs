@@ -18,11 +18,11 @@ namespace OneBotSharp.Protocol;
 
 public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
 {
-    private IEventLoopGroup group;
-    private IChannel ch;
-    private Bootstrap bootstrap;
-    private Uri uri;
-    private ConcurrentDictionary<string, (Semaphore, JToken?)> queues = [];
+    private IEventLoopGroup _group;
+    private IChannel _ch;
+    private Bootstrap _bootstrap;
+    private Uri _uri;
+    private ConcurrentDictionary<string, (Semaphore, JToken?)> _queues = [];
 
     public event Action<EventBase>? EventRecv;
     public event Action<ISendRecvPipe.PipeState>? StateChange;
@@ -34,32 +34,32 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
             throw new ArgumentNullException(nameof(Url), "Url is null");
         }
 
-        uri = new Uri(Url);
+        _uri = new Uri(Url);
 
         var useLibuv = RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                     || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
         if (useLibuv)
         {
-            group = new EventLoopGroup();
+            _group = new EventLoopGroup();
         }
         else
         {
-            group = new MultithreadEventLoopGroup();
+            _group = new MultithreadEventLoopGroup();
         }
 
-        bootstrap = new Bootstrap();
-        bootstrap
-            .Group(group)
+        _bootstrap = new Bootstrap();
+        _bootstrap
+            .Group(_group)
             .Option(ChannelOption.TcpNodelay, true);
 
         if (useLibuv)
         {
-            bootstrap.Channel<TcpChannel>();
+            _bootstrap.Channel<TcpChannel>();
         }
         else
         {
-            bootstrap.Channel<TcpSocketChannel>();
+            _bootstrap.Channel<TcpSocketChannel>();
         }
 
         // Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
@@ -67,9 +67,9 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         // HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
         var handler = new WebSocketClientHandler(this,
             WebSocketClientHandshakerFactory.NewHandshaker(
-                    uri, WebSocketVersion.V13, null, true, new DefaultHttpHeaders()));
+                    _uri, WebSocketVersion.V13, null, true, new DefaultHttpHeaders()));
 
-        bootstrap.Handler(new ActionChannelInitializer<IChannel>(channel =>
+        _bootstrap.Handler(new ActionChannelInitializer<IChannel>(channel =>
         {
             IChannelPipeline pipeline = channel.Pipeline;
             if (Timeout is { } time)
@@ -89,18 +89,18 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
 
     private async void Start()
     {
-        ch = await bootstrap.ConnectAsync(uri.Host, uri.Port);
+        _ch = await _bootstrap.ConnectAsync(_uri.Host, _uri.Port);
     }
 
     private async void Send(string data)
     {
         WebSocketFrame frame = new TextWebSocketFrame(data);
-        await ch.WriteAndFlushAsync(frame);
+        await _ch.WriteAndFlushAsync(frame);
     }
 
     private async Task<T?> Send<T>(string url, object data)
     {
-        if (!ch.IsWritable)
+        if (!_ch.IsWritable)
         {
             throw new Exception("websocket is not connetc");
         }
@@ -109,7 +109,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         {
             uuid = Guid.NewGuid().ToString().ToLower();
         }
-        while (queues.ContainsKey(uuid));
+        while (_queues.ContainsKey(uuid));
         var obj = new JObject
         {
             { "action", url[1..] },
@@ -117,10 +117,10 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
             { "echo", uuid }
         };
         using var sem = new Semaphore(0, 2);
-        queues.TryAdd(uuid, (sem, null));
+        _queues.TryAdd(uuid, (sem, null));
         Send(obj.ToString());
         await Task.Run(sem.WaitOne);
-        queues.Remove(uuid, out var data1);
+        _queues.Remove(uuid, out var data1);
         if (data1.Item2 is { } obj1)
         {
             return obj1.ToObject<T>();
@@ -133,7 +133,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
 
     private async Task<T?> Send<T>(string url)
     {
-        if (!ch.IsWritable)
+        if (!_ch.IsWritable)
         {
             throw new Exception("websocket is not connetc");
         }
@@ -142,7 +142,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         {
             uuid = Guid.NewGuid().ToString().ToLower();
         }
-        while (queues.ContainsKey(uuid));
+        while (_queues.ContainsKey(uuid));
         var obj = new JObject
         {
             { "action", url[1..] },
@@ -150,10 +150,10 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
             { "echo", uuid }
         };
         using var sem = new Semaphore(0, 2);
-        queues.TryAdd(uuid, (sem, null));
+        _queues.TryAdd(uuid, (sem, null));
         Send(obj.ToString());
         await Task.Run(sem.WaitOne);
-        queues.Remove(uuid, out var data1);
+        _queues.Remove(uuid, out var data1);
         if (data1.Item2 is { } obj1)
         {
             return obj1.ToObject<T>();
@@ -166,10 +166,10 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
 
     public async void Ping()
     {
-        if (ch?.IsWritable == true)
+        if (_ch?.IsWritable == true)
         {
             var frame = new PingWebSocketFrame();
-            await ch.WriteAndFlushAsync(frame);
+            await _ch.WriteAndFlushAsync(frame);
         }
     }
 
@@ -367,12 +367,12 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
 
     public override async void Dispose()
     {
-        if (ch?.IsWritable == true)
+        if (_ch?.IsWritable == true)
         {
-            await ch.WriteAndFlushAsync(new CloseWebSocketFrame());
+            await _ch.WriteAndFlushAsync(new CloseWebSocketFrame());
         }
 
-        await group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
+        await _group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
     }
 
     public class WebSocketClientHandler(OneBotWebSocketClient bot, WebSocketClientHandshaker handshaker)
@@ -421,12 +421,12 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
                 string text = textFrame.Text();
                 var obj = JObject.Parse(text);
                 if (obj.TryGetValue("echo", out var echo)
-                    && bot.queues.TryGetValue(echo.ToString(), out var handel))
+                    && bot._queues.TryGetValue(echo.ToString(), out var handel))
                 {
                     var status = obj["status"]?.ToString();
                     if (status == "ok")
                     {
-                        bot.queues["echo"] = (handel.Item1, obj["data"]);
+                        bot._queues["echo"] = (handel.Item1, obj["data"]);
                     }
 
                     handel.Item1.Release();

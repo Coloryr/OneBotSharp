@@ -6,7 +6,8 @@ public static class Bot
 {
     public enum ConnectType
     {
-        WebSocket, WebSocketServer
+        WebSocket, 
+        //WebSocketServer
     }
 
     /// <summary>
@@ -28,7 +29,7 @@ public static class Bot
     /// <returns></returns>
     public static IRecvServer MakeRecvPipe(string url, string? key = null)
     {
-        return new OneBotHttpPost(url, key);
+        return new OneBotHttpServer(url, key);
     }
 
     /// <summary>
@@ -42,6 +43,7 @@ public static class Bot
     {
         return type switch
         {
+            //ConnectType.WebSocketServer => new OneBotWebSocketServer(url, key),
             _ => new OneBotWebSocketClient(url, key)
         };
     }

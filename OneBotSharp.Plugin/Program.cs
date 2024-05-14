@@ -17,7 +17,7 @@ internal class Program
         //var recv = Bot.MakeRecvPipe("http://0.0.0.0:8081");
         //recv.EventRecv += Recv_EventRecv;
 
-        var pipe = Bot.MakePipe("ws://localhost:8082/", Bot.ConnectType.WebSocket);
+        var pipe = Bot.MakePipe("ws://localhost:8082/", Bot.ConnectType.WebSocketServer);
         pipe.EventRecv += Recv_EventRecv;
         send = pipe;
 
