@@ -1,4 +1,5 @@
-﻿using System.Runtime;
+﻿using System.Net;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,6 +15,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OneBotSharp.Objs.Event;
 using HttpMethod = DotNetty.Codecs.Http.HttpMethod;
+using HttpVersion = DotNetty.Codecs.Http.HttpVersion;
 
 namespace OneBotSharp.Protocol;
 
@@ -28,7 +30,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
 
     public event Action<EventBase>? EventRecv;
 
-    public OneBotHttpPost()
+    public OneBotHttpPost(string url, string? key = null) : base(url, key)
     {
         if (Url == null)
         {
@@ -80,8 +82,8 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
             .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
             {
                 IChannelPipeline pipeline = channel.Pipeline;
-                pipeline.AddLast("encoder", new HttpResponseEncoder());
-                pipeline.AddLast("decoder", new HttpRequestDecoder(4096, 8192, 8192, false));
+                pipeline.AddLast("codec", new HttpServerCodec(4096, 8192, 8192, false));
+                pipeline.AddLast("agg", new HttpObjectAggregator(65536));
                 if (Timeout is { } time)
                 {
                     pipeline.AddLast(new ReadTimeoutHandler(time));
@@ -105,7 +107,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
     private async void Start()
     {
         var uri = new Uri(Url);
-        _bootstrapChannel = await _bootstrap.BindAsync(uri.Host, uri.Port);
+        _bootstrapChannel = await _bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(uri.Host), uri.Port));
     }
 
     private class OneBotServerHandler(OneBotHttpPost bot) : ChannelHandlerAdapter
@@ -193,18 +195,20 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
 
                         if (eb.Reply != null)
                         {
-                            byte[] json = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(eb.Reply));
+                            string temp1 = JsonConvert.SerializeObject(eb.Reply);
+                            byte[] json = Encoding.UTF8.GetBytes(temp1);
 
                             var length = new AsciiString($"{json.Length}");
-
+                            IByteBuffer buffer = Unpooled.WrappedBuffer(json);
                             var response = new DefaultFullHttpResponse(HttpVersion.Http11,
-                                HttpResponseStatus.OK, Unpooled.WrappedBuffer(json), false);
+                                HttpResponseStatus.OK, buffer, false);
                             HttpHeaders headers = response.Headers;
                             headers.Set(ContentTypeEntity, TypeJson);
                             headers.Set(ServerEntity, ServerName);
                             headers.Set(ContentLengthEntity, length);
 
-                            ctx.WriteAsync(response);
+                            ctx.WriteAndFlushAsync(response);
+                            ctx.CloseAsync();
                             return;
                         }
                     }

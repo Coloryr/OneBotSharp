@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using DotNetty.Codecs.Http;
@@ -26,7 +27,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
     public event Action<EventBase>? EventRecv;
     public event Action<ISendRecvPipe.PipeState>? StateChange;
 
-    public OneBotWebSocketClient()
+    public OneBotWebSocketClient(string url, string? key = null) : base(url, key)
     {
         if (Url == null)
         {
@@ -377,6 +378,11 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
     public class WebSocketClientHandler(OneBotWebSocketClient bot, WebSocketClientHandshaker handshaker)
         : SimpleChannelInboundHandler<object>
     {
+        public override void ChannelActive(IChannelHandlerContext ctx)
+        {
+            handshaker.HandshakeAsync(ctx.Channel);
+        }
+
         public override void ChannelInactive(IChannelHandlerContext context)
         {
             Console.WriteLine("WebSocket Client disconnected!");

@@ -24,15 +24,15 @@ public record SendGroupMsg
     /// <summary>
     /// 发送消息
     /// </summary>
-    /// <param name="user">QQ号</param>
+    /// <param name="group">群号</param>
     /// <param name="msg">消息</param>
     /// <param name="escape">解析 CQ 码</param>
     /// <returns></returns>
-    public static SendPrivateMsg Build(long user, string msg, bool escape = false)
+    public static SendGroupMsg Build(long group, string msg, bool escape = false)
     {
         return new()
         {
-            UserId = user,
+            GroupId = group,
             Message = msg,
             AutoEscape = escape
         };
@@ -41,14 +41,14 @@ public record SendGroupMsg
     /// <summary>
     /// 发送消息
     /// </summary>
-    /// <param name="user">QQ号</param>
+    /// <param name="group">群号</param>
     /// <param name="msg">消息</param>
     /// <returns></returns>
-    public static SendPrivateMsg Build(long user, List<MsgBase> msg)
+    public static SendGroupMsg Build(long group, List<MsgBase> msg)
     {
         return new()
         {
-            UserId = user,
+            GroupId = group,
             Message = msg,
             AutoEscape = false
         };

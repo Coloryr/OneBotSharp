@@ -9,7 +9,7 @@ public class OneBotHttpClient : IOneBotClient, ISendClient
 {
     private readonly HttpClient client;
 
-    public OneBotHttpClient()
+    public OneBotHttpClient(string url, string? key = null) : base(url, key)
     {
         if (Url == null)
         {

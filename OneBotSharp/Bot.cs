@@ -17,7 +17,7 @@ public static class Bot
     /// <returns></returns>
     public static ISendClient MakeSendPipe(string url, string? key = null)
     {
-        return new OneBotHttpClient() { Url = url, Key = key };
+        return new OneBotHttpClient(url, key);
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public static class Bot
     /// <returns></returns>
     public static IRecvServer MakeRecvPipe(string url, string? key = null)
     {
-        return new OneBotHttpPost() { Url = url, Key = key };
+        return new OneBotHttpPost(url, key);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public static class Bot
     {
         return type switch
         {
-            _ => new OneBotWebSocketClient() { Url = url, Key = key }
+            _ => new OneBotWebSocketClient(url, key)
         };
     }
 }
