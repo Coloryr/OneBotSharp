@@ -9,7 +9,6 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using DotNetty.Transport.Libuv;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OneBotSharp.Objs.Api;
 using OneBotSharp.Objs.Event;
@@ -65,7 +64,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         // Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
         // If you change it to V00, ping is not supported and remember to change
         // HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
-        var handler = new WebSocketClientHandler(this, 
+        var handler = new WebSocketClientHandler(this,
             WebSocketClientHandshakerFactory.NewHandshaker(
                     uri, WebSocketVersion.V13, null, true, new DefaultHttpHeaders()));
 
@@ -375,7 +374,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         await group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
     }
 
-    public class WebSocketClientHandler(OneBotWebSocketClient bot, WebSocketClientHandshaker handshaker) 
+    public class WebSocketClientHandler(OneBotWebSocketClient bot, WebSocketClientHandshaker handshaker)
         : SimpleChannelInboundHandler<object>
     {
         public override void ChannelInactive(IChannelHandlerContext context)

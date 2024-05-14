@@ -151,7 +151,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
                         byte[] hash = bot._hMACSHA1.ComputeHash(temp);
                         string sig = BitConverter.ToString(hash).Replace("-", "").ToLower();
 
-                        if (!request.Headers.TryGetAsString(Signature, out var receivedSig) 
+                        if (!request.Headers.TryGetAsString(Signature, out var receivedSig)
                             || $"sha1={sig}" != receivedSig)
                         {
                             var response = new DefaultFullHttpResponse(HttpVersion.Http11,
@@ -170,7 +170,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
                     }
                     catch (Exception e)
                     {
-                        var response = new DefaultFullHttpResponse(HttpVersion.Http11, 
+                        var response = new DefaultFullHttpResponse(HttpVersion.Http11,
                             HttpResponseStatus.BadRequest, Unpooled.Empty, false);
                         ctx.WriteAndFlushAsync(response);
                         ctx.CloseAsync();
@@ -220,7 +220,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
                 }
 
                 {
-                    var response = new DefaultFullHttpResponse(HttpVersion.Http11, 
+                    var response = new DefaultFullHttpResponse(HttpVersion.Http11,
                         HttpResponseStatus.NoContent, Unpooled.Empty, false);
                     ctx.WriteAndFlushAsync(response);
                     ctx.CloseAsync();
@@ -228,7 +228,7 @@ public class OneBotHttpPost : IOneBotClient, IRecvServer
             }
             else
             {
-                var response = new DefaultFullHttpResponse(HttpVersion.Http11, 
+                var response = new DefaultFullHttpResponse(HttpVersion.Http11,
                     HttpResponseStatus.NotFound, Unpooled.Empty, false);
                 ctx.WriteAndFlushAsync(response);
                 ctx.CloseAsync();

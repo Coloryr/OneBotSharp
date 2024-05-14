@@ -53,7 +53,7 @@ internal class Program
 
     private static void MsgJsonTest()
     {
-        var json = 
+        var json =
 """
 {
     "type": "node",
