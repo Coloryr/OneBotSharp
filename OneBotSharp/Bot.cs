@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OneBotSharp.Protocol;
+﻿using OneBotSharp.Protocol;
 
 namespace OneBotSharp;
 
 public static class Bot
 {
     public enum ConnectType
-    { 
+    {
         WebSocket, WebSocketServer
     }
 

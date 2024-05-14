@@ -21,8 +21,8 @@ internal class Program
     private static void Recv_EventRecv(EventBase obj)
     {
         if (obj is EventGroupMessage groupMessage)
-        { 
-            
+        {
+
         }
     }
 }
