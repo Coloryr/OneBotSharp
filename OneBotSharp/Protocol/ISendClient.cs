@@ -1,6 +1,6 @@
 ﻿using OneBotSharp.Objs.Api;
 
-namespace OneBotSharp.Http;
+namespace OneBotSharp.Protocol;
 
 public static class SendUrl
 {
@@ -87,7 +87,7 @@ public interface ISendClient
     /// </summary>
     /// <param name="msg"></param>
     /// <returns></returns>
-    public Task<SendLike?> SendLike(SendLike msg);
+    public Task<SendLikeRes?> SendLike(SendLike msg);
     /// <summary>
     /// 群组踢人
     /// </summary>
