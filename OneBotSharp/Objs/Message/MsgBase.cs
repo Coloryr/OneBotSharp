@@ -29,6 +29,7 @@ public abstract record MsgBase
         { Enums.MsgType.Forward, (MsgForward.RecvParse, MsgForward.SendParse) },
         { Enums.MsgType.Node, (MsgNode.RecvParse, MsgNode.SendParse) },
         { Enums.MsgType.Xml, (MsgXml.RecvParse, MsgXml.SendParse) },
+        { Enums.MsgType.Json, (MsgJson.RecvParse, MsgJson.SendParse) },
     };
 
     public static readonly Dictionary<string, Func<JObject, bool, MsgBase?>> JsonParser = new()
@@ -52,6 +53,7 @@ public abstract record MsgBase
         { Enums.MsgType.Forward, MsgForward.JsonParse },
         { Enums.MsgType.Node, MsgNode.JsonParse },
         { Enums.MsgType.Xml, MsgXml.JsonParse },
+        { Enums.MsgType.Json, MsgJson.JsonParse },
     };
 
     [JsonProperty("type")]

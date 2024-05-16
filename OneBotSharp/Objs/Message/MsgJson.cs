@@ -58,7 +58,7 @@ public record MsgJson : MsgBase
         };
     }
 
-    public static MsgJson MsgRecvParse(CqCode code)
+    public static MsgJson RecvParse(CqCode code)
     {
         if (code.Type != Enums.MsgType.Json)
         {
@@ -74,12 +74,12 @@ public record MsgJson : MsgBase
         };
     }
 
-    public static MsgJson MsgSendParse(CqCode code)
+    public static MsgJson SendParse(CqCode code)
     {
-        return MsgRecvParse(code);
+        return RecvParse(code);
     }
 
-    public static MsgJson? MsgJsonParser(JObject text, bool send)
+    public static MsgJson? JsonParse(JObject text, bool send)
     {
         return text.ToObject<MsgJson>();
     }
