@@ -415,7 +415,7 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
                     var status = obj["status"]?.ToString();
                     if (status == "ok")
                     {
-                        bot._queues["echo"] = (handel.Item1, obj["data"]);
+                        bot._queues[echo.ToString()] = (handel.Item1, obj["data"]);
                     }
 
                     handel.Item1.Release();
