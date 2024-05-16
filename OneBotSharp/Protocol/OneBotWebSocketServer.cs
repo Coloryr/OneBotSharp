@@ -129,7 +129,7 @@ public class OneBotWebSocketServer : IOneBot<ISendRecvPipeServer>, ISendRecvPipe
             while (_queues.ContainsKey(uuid));
             var obj = new JObject
             {
-                { "action", url[1..] },
+                { "action", url },
                 { "params", data == null ? null : JToken.FromObject(data) },
                 { "echo", uuid }
             };
