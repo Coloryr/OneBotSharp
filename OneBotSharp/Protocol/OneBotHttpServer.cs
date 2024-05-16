@@ -30,7 +30,7 @@ public class OneBotHttpServer : IOneBot<IRecvServer>, IRecvServer
 
     public override IRecvServer Pipe => this;
 
-    public event Action<IRecvServer, EventBase>? EventRecv;
+    public event Action<EventBase>? EventRecv;
 
     public OneBotHttpServer(string url, string? key = null) : base(url, key)
     {
@@ -201,7 +201,7 @@ public class OneBotHttpServer : IOneBot<IRecvServer>, IRecvServer
                             return;
                         }
 
-                        bot.EventRecv?.Invoke(bot, eb);
+                        bot.EventRecv?.Invoke(eb);
 
                         if (eb.Reply != null)
                         {
