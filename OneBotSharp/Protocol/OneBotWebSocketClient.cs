@@ -109,7 +109,7 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
 
     private async Task<T?> Send<T>(string url, object? data = null)
     {
-        if (!_ch.IsWritable)
+        if (_ch == null || !_ch.IsWritable)
         {
             throw new Exception("websocket is not connetc");
         }
@@ -365,6 +365,8 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
     public class WebSocketClientHandler(OneBotWebSocketClient bot, WebSocketClientHandshaker handshaker)
         : SimpleChannelInboundHandler<object>
     {
+        public override bool IsSharable => true;
+
         public override void ChannelActive(IChannelHandlerContext ctx)
         {
             handshaker.HandshakeAsync(ctx.Channel);
