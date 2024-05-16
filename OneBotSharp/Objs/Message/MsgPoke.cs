@@ -41,6 +41,11 @@ public record MsgPoke : MsgBase
         return $"[CQ:at,type={Data.Type},id={Data.Id},name={Data.Name}]";
     }
 
+    public override string ToString()
+    {
+        return $"[戳一戳]";
+    }
+
     public static MsgPoke Build(string type, string id)
     {
         return new()

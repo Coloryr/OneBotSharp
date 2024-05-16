@@ -91,6 +91,11 @@ public record MsgRecord : MsgBase
         return code.ToString();
     }
 
+    public override string ToString()
+    {
+        return $"[语音]";
+    }
+
     public static MsgRecord BuildSendFile(string file, bool magic = false)
     {
         return new()

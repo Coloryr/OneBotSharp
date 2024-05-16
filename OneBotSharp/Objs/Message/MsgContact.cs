@@ -34,6 +34,11 @@ public record MsgContact : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"推荐{(Data.Type == Enums.ContactType.Group ? "群聊" : "好友")}：{Data.Id}";
+    }
+
     public static MsgContact BuildFriend(string id)
     {
         return new()

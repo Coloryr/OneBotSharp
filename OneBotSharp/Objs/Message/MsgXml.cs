@@ -33,6 +33,11 @@ public record MsgXml : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[Xml消息]";
+    }
+
     public static MsgXml Build(string xml)
     {
         return new()

@@ -35,6 +35,11 @@ public record MsgAnonymous : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return "[匿名消息]";
+    }
+
     public static MsgAnonymous Build(bool? ignore = null)
     {
         return new()

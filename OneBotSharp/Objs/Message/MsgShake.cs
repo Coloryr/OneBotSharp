@@ -27,6 +27,11 @@ public record MsgShake : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[窗口抖动]";
+    }
+
     public static MsgShake Build()
     {
         return new()

@@ -33,6 +33,11 @@ public record MsgForward : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[合并转发]";
+    }
+
     public Task<GetForwardMsgRes?> GetMsg(ISendClient client)
     {
         return client.GetForwardMsg(new GetForwardMsg()

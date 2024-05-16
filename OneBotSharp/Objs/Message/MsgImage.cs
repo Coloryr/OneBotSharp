@@ -92,6 +92,11 @@ public record MsgImage : MsgBase
         return code.ToString();
     }
 
+    public override string ToString()
+    {
+        return $"[图片]";
+    }
+
     public static MsgImage BuildSendFile(string file, bool flash = false)
     {
         return new()

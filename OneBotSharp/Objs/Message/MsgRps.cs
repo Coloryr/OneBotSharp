@@ -27,6 +27,11 @@ public record MsgRps : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[魔法猜拳]";
+    }
+
     public static MsgRps Build()
     {
         return new()

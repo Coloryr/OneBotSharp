@@ -77,6 +77,11 @@ public abstract record MsgBase
         return JsonConvert.SerializeObject(this);
     }
 
+    public override string ToString()
+    {
+        return $"[消息]";
+    }
+
     /// <summary>
     /// 从插件接收到的CQ码进行解析
     /// </summary>

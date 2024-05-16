@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -74,6 +75,17 @@ public record MsgNode : MsgBase
         Data.Content = Messages;
 
         return JsonConvert.SerializeObject(this);
+    }
+
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
+        foreach (var item in Messages)
+        {
+            builder.Append(item.ToString());
+        }
+
+        return builder.ToString();
     }
 
     public static MsgNode Build(string id)

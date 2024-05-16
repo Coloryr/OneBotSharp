@@ -49,6 +49,11 @@ public record MsgShare : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[分享链接]";
+    }
+
     public static MsgShare Build(string url, string title, string content, string image)
     {
         return new()

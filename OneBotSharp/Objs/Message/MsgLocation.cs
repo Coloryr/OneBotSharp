@@ -63,6 +63,21 @@ public record MsgLocation : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        var str = $"位置信息：{Data.Lat},{Data.Lon}";
+        if (Data.Title is { } text)
+        {
+            str += "," + text;
+        }
+        if (Data.Content is { } content)
+        {
+            str += "," + content;
+        }
+
+        return str;
+    }
+
     public static MsgLocation Build(string lat, string lon, string? title = null, string? content = null)
     {
         return new()

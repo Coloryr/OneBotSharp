@@ -23,12 +23,17 @@ public record MsgJson : MsgBase
 
     public override string BuildSendCq()
     {
-        return $"[CQ:xml,data={Data.Data}]";
+        return $"[CQ:json,data={Data.Data}]";
     }
 
     public override string BuildRecvCq()
     {
         return BuildSendCq();
+    }
+
+    public override string ToString()
+    {
+        return $"[Json消息]";
     }
 
     public static MsgJson Build(string json)

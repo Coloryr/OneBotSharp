@@ -77,6 +77,8 @@ public record MsgMusic : MsgBase
             {
                 code.Datas.Add("image", Data.Image);
             }
+
+            return code.ToString();
         }
         return $"[CQ:music,type={Data.Type},id={Data.Id}]";
     }
@@ -84,6 +86,38 @@ public record MsgMusic : MsgBase
     public override string BuildRecvCq()
     {
         return BuildSendCq();
+    }
+
+    public override string ToString()
+    {
+        var str = $"音乐分享：";
+        if (Data.Type == Enums.MusicType.QQ)
+        {
+            str += "QQ音乐";
+        }
+        else if (Data.Type == Enums.MusicType.N163)
+        {
+            str += "网易云音乐";
+        }
+        else if (Data.Type == Enums.MusicType.XM)
+        {
+            str += "虾米音乐";
+        }
+        else
+        {
+            str += "其他音乐";
+        }
+
+        if (Data.Title is { } title)
+        {
+            str += "," + title;
+        }
+        if (Data.Content is { } content)
+        {
+            str += "," + content;
+        }
+
+        return str;
     }
 
     public static MsgMusic BuildQQ(string id)

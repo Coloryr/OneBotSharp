@@ -27,6 +27,11 @@ public record MsgDice : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[随机骰子]";
+    }
+
     public static MsgDice Build()
     {
         return new()

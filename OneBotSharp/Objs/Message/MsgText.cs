@@ -25,6 +25,11 @@ public record MsgText : MsgBase
         return CqHelper.UnEscape(Data.Text);
     }
 
+    public override string ToString()
+    {
+        return Data.Text!;
+    }
+
     public static MsgText? JsonParse(JObject text, bool send)
     {
         return text.ToObject<MsgText>();

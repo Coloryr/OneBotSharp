@@ -31,6 +31,11 @@ public record MsgReply : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"[回复消息]";
+    }
+
     public static MsgReply Build(string id)
     {
         return new()

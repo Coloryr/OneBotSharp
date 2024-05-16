@@ -31,6 +31,11 @@ public record MsgAt : MsgBase
         return BuildSendCq();
     }
 
+    public override string ToString()
+    {
+        return $"@{Data.QQ}";
+    }
+
     public static MsgAt BuildAt(string id)
     {
         return new()

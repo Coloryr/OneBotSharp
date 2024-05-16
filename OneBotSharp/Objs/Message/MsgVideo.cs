@@ -60,6 +60,11 @@ public record MsgVideo : MsgBase
         return code.ToString();
     }
 
+    public override string ToString()
+    {
+        return $"[视频消息]";
+    }
+
     public static MsgVideo BuildFile(string file)
     {
         return new()

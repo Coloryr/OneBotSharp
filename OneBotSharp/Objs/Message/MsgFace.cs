@@ -26,6 +26,11 @@ public record MsgFace : MsgBase
         return $"[CQ:face,id={Data.Id}]";
     }
 
+    public override string ToString()
+    {
+        return $"[表情]";
+    }
+
     public override string BuildRecvCq()
     {
         return BuildSendCq();
