@@ -122,9 +122,15 @@ public class OneBotHttpClient : IOneBot<ISendClient>, ISendClient
         return Post<GetCsrfTokenRes>(SendUrl.GetCsrfToken, "");
     }
 
-    public Task<GetForwardMsgRes?> GetForwardMsg(GetForwardMsg msg)
+    public async Task<GetForwardMsgRes?> GetForwardMsg(GetForwardMsg msg)
     {
-        return Post<GetForwardMsgRes>(SendUrl.GetForwardMsg, msg);
+        var res = await Post<GetForwardMsgRes>(SendUrl.GetForwardMsg, msg);
+        if (res is { })
+        {
+            res.Parse();
+        }
+
+        return res;
     }
 
     public Task<List<GetFriendListRes>?> GetFriendList()
@@ -167,9 +173,14 @@ public class OneBotHttpClient : IOneBot<ISendClient>, ISendClient
         return Post<GetLoginInfoRes>(SendUrl.GetLoginInfo);
     }
 
-    public Task<GetMsgRes?> GetMsg(GetMsg msg)
+    public async Task<GetMsgRes?> GetMsg(GetMsg msg)
     {
-        return Post<GetMsgRes>(SendUrl.GetMsg);
+        var res = await Post<GetMsgRes>(SendUrl.GetMsg);
+        if (res is { })
+        {
+            res.Parse();
+        }
+        return res;
     }
 
     public Task<GetRecordRes?> GetRecord(GetRecord msg)

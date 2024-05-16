@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OneBotSharp.Objs.Api;
+using OneBotSharp.Protocol;
 
 namespace OneBotSharp.Objs.Message;
 
@@ -29,6 +31,14 @@ public record MsgForward : MsgBase
     public override string BuildRecvCq()
     {
         return BuildSendCq();
+    }
+
+    public Task<GetForwardMsgRes?> GetMsg(ISendClient client)
+    {
+        return client.GetForwardMsg(new GetForwardMsg()
+        {
+            Id = Data.Id!
+        });
     }
 
     public static MsgForward Build(string id)

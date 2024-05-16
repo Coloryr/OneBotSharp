@@ -22,7 +22,7 @@ internal class Program
         bot.Pipe.EventRecv += Recv_EventRecv;
         bot.Pipe.StateChange += Pipe_StateChange;
         send = bot.Pipe;
-
+        bot.Start();
         Console.ReadKey();
     }
 

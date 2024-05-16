@@ -185,9 +185,15 @@ public class OneBotWebSocketServer : IOneBot<ISendRecvPipeServer>, ISendRecvPipe
             return Send<GetCsrfTokenRes>(SendUrl.GetCsrfToken);
         }
 
-        public Task<GetForwardMsgRes?> GetForwardMsg(GetForwardMsg msg)
+        public async Task<GetForwardMsgRes?> GetForwardMsg(GetForwardMsg msg)
         {
-            return Send<GetForwardMsgRes>(SendUrl.GetForwardMsg, msg);
+            var res = await Send<GetForwardMsgRes>(SendUrl.GetForwardMsg, msg);
+            if (res is { })
+            {
+                res.Parse();
+            }
+
+            return res;
         }
 
         public Task<List<GetFriendListRes>?> GetFriendList()
@@ -230,9 +236,14 @@ public class OneBotWebSocketServer : IOneBot<ISendRecvPipeServer>, ISendRecvPipe
             return Send<GetLoginInfoRes>(SendUrl.GetLoginInfo);
         }
 
-        public Task<GetMsgRes?> GetMsg(GetMsg msg)
+        public async Task<GetMsgRes?> GetMsg(GetMsg msg)
         {
-            return Send<GetMsgRes>(SendUrl.GetMsg, msg);
+            var res = await Send<GetMsgRes>(SendUrl.GetMsg, msg);
+            if (res is { })
+            {
+                res.Parse();
+            }
+            return res;
         }
 
         public Task<GetRecordRes?> GetRecord(GetRecord msg)
