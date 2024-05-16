@@ -19,7 +19,7 @@ using HttpVersion = DotNetty.Codecs.Http.HttpVersion;
 
 namespace OneBotSharp.Protocol;
 
-public class OneBotHttpServer : IOneBotClient, IRecvServer
+public class OneBotHttpServer : IOneBot<IRecvServer>, IRecvServer
 {
     private readonly IEventLoopGroup _group;
     private readonly IEventLoopGroup _workGroup;
@@ -28,7 +28,9 @@ public class OneBotHttpServer : IOneBotClient, IRecvServer
     private readonly bool _haveKey;
     private readonly HMACSHA1 _hMACSHA1;
 
-    public event Action<EventBase>? EventRecv;
+    public override IRecvServer Pipe => this;
+
+    public event Action<IRecvServer, EventBase>? EventRecv;
 
     public OneBotHttpServer(string url, string? key = null) : base(url, key)
     {
@@ -91,8 +93,6 @@ public class OneBotHttpServer : IOneBotClient, IRecvServer
                 }
                 pipeline.AddLast("handler", new OneBotServerHandler(this));
             }));
-
-        Start();
     }
 
     public override void Dispose()
@@ -104,10 +104,20 @@ public class OneBotHttpServer : IOneBotClient, IRecvServer
         _group.ShutdownGracefullyAsync().Wait();
     }
 
-    private async void Start()
+    public override async Task Start()
     {
         var uri = new Uri(Url);
         _bootstrapChannel = await _bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(uri.Host), uri.Port));
+    }
+
+    public override Task Close()
+    {
+        if (_bootstrapChannel != null)
+        {
+            return _bootstrapChannel.CloseAsync();
+        }
+
+        return Task.CompletedTask;
     }
 
     private class OneBotServerHandler(OneBotHttpServer bot) : ChannelHandlerAdapter
@@ -191,7 +201,7 @@ public class OneBotHttpServer : IOneBotClient, IRecvServer
                             return;
                         }
 
-                        bot.EventRecv?.Invoke(eb);
+                        bot.EventRecv?.Invoke(bot, eb);
 
                         if (eb.Reply != null)
                         {

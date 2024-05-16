@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using DotNetty.Codecs.Http;
@@ -16,7 +15,7 @@ using OneBotSharp.Objs.Event;
 
 namespace OneBotSharp.Protocol;
 
-public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
+public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
 {
     private IEventLoopGroup _group;
     private IChannel _ch;
@@ -24,8 +23,10 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
     private Uri _uri;
     private ConcurrentDictionary<string, (Semaphore, JToken?)> _queues = [];
 
-    public event Action<EventBase>? EventRecv;
-    public event Action<ISendRecvPipe.PipeState>? StateChange;
+    public override ISendRecvPipe Pipe => this;
+
+    public event Action<ISendRecvPipe, EventBase>? EventRecv;
+    public event Action<ISendRecvPipe, ISendRecvPipe.PipeState>? StateChange;
 
     public OneBotWebSocketClient(string url, string? key = null) : base(url, key)
     {
@@ -83,13 +84,21 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
                 WebSocketClientCompressionHandler.Instance,
                 handler);
         }));
-
-        Start();
     }
 
-    private async void Start()
+    public override async Task Start()
     {
         _ch = await _bootstrap.ConnectAsync(_uri.Host, _uri.Port);
+    }
+
+    public override Task Close()
+    {
+        if (_ch != null)
+        {
+            return _ch.CloseAsync();
+        }
+
+        return Task.CompletedTask;
     }
 
     private async void Send(string data)
@@ -98,7 +107,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         await _ch.WriteAndFlushAsync(frame);
     }
 
-    private async Task<T?> Send<T>(string url, object data)
+    private async Task<T?> Send<T>(string url, object? data = null)
     {
         if (!_ch.IsWritable)
         {
@@ -113,40 +122,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         var obj = new JObject
         {
             { "action", url[1..] },
-            { "params", JToken.FromObject(data) },
-            { "echo", uuid }
-        };
-        using var sem = new Semaphore(0, 2);
-        _queues.TryAdd(uuid, (sem, null));
-        Send(obj.ToString());
-        await Task.Run(sem.WaitOne);
-        _queues.Remove(uuid, out var data1);
-        if (data1.Item2 is { } obj1)
-        {
-            return obj1.ToObject<T>();
-        }
-        else
-        {
-            return default;
-        }
-    }
-
-    private async Task<T?> Send<T>(string url)
-    {
-        if (!_ch.IsWritable)
-        {
-            throw new Exception("websocket is not connetc");
-        }
-        string uuid;
-        do
-        {
-            uuid = Guid.NewGuid().ToString().ToLower();
-        }
-        while (_queues.ContainsKey(uuid));
-        var obj = new JObject
-        {
-            { "action", url[1..] },
-            { "params", null },
+            { "params", data == null ? null : JToken.FromObject(data) },
             { "echo", uuid }
         };
         using var sem = new Semaphore(0, 2);
@@ -386,7 +362,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
         public override void ChannelInactive(IChannelHandlerContext context)
         {
             Console.WriteLine("WebSocket Client disconnected!");
-            bot.StateChange?.Invoke(ISendRecvPipe.PipeState.Disconnected);
+            bot.StateChange?.Invoke(bot, ISendRecvPipe.PipeState.Disconnected);
         }
 
         protected override void ChannelRead0(IChannelHandlerContext ctx, object msg)
@@ -397,13 +373,13 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
                 try
                 {
                     handshaker.FinishHandshake(ch, (IFullHttpResponse)msg);
-                    bot.StateChange?.Invoke(ISendRecvPipe.PipeState.Connected);
+                    bot.StateChange?.Invoke(bot, ISendRecvPipe.PipeState.Connected);
                     Console.WriteLine("WebSocket Client connected!");
                 }
                 catch (WebSocketHandshakeException e)
                 {
                     Console.WriteLine("WebSocket Client failed to connect");
-                    bot.StateChange?.Invoke(ISendRecvPipe.PipeState.ConnectFail);
+                    bot.StateChange?.Invoke(bot, ISendRecvPipe.PipeState.ConnectFail);
                     Console.WriteLine(e);
                 }
 
@@ -436,7 +412,7 @@ public class OneBotWebSocketClient : IOneBotClient, ISendRecvPipe
                     var ev = EventBase.ParseRecv(obj);
                     if (ev != null)
                     {
-                        bot.EventRecv?.Invoke(ev);
+                        bot.EventRecv?.Invoke(bot, ev);
                     }
                 }
             }

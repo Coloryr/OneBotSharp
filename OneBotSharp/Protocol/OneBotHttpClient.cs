@@ -5,9 +5,11 @@ using OneBotSharp.Objs.Api;
 
 namespace OneBotSharp.Protocol;
 
-public class OneBotHttpClient : IOneBotClient, ISendClient
+public class OneBotHttpClient : IOneBot<ISendClient>, ISendClient
 {
     private readonly HttpClient client;
+
+    public override ISendClient Pipe => this;
 
     public OneBotHttpClient(string url, string? key = null) : base(url, key)
     {
@@ -279,5 +281,15 @@ public class OneBotHttpClient : IOneBotClient, ISendClient
     {
         client.CancelPendingRequests();
         client.Dispose();
+    }
+
+    public override Task Start()
+    {
+        return Task.CompletedTask;
+    }
+
+    public override Task Close()
+    {
+        return Task.CompletedTask;
     }
 }
