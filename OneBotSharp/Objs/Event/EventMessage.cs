@@ -22,12 +22,12 @@ public abstract record EventMessage : EventBase
     /// 消息 ID
     /// </summary>
     [JsonProperty("message_id")]
-    public int MessageId { get; set; }
+    public long MessageId { get; set; }
     /// <summary>
     /// 发送者 QQ 号
     /// </summary>
     [JsonProperty("user_id")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
     /// <summary>
     /// 不要改这个，从Messages获取 
     /// </summary>
