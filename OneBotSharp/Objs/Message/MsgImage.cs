@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -99,11 +100,16 @@ public record MsgImage : MsgBase
 
     public static MsgImage BuildSendFile(string file, bool flash = false)
     {
+        file = Path.GetFullPath(file);
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            file = file[1..];
+        }
         return new()
         {
             Data = new()
             {
-                File = "file:///" + Path.GetFullPath(file),
+                File = "file:///" + file,
                 Type = flash ? Enums.ImageType.Flash : null,
                 Cache = "1",
                 Proxy = "1"
