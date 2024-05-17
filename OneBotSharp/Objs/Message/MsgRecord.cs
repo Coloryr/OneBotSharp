@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -98,11 +99,16 @@ public record MsgRecord : MsgBase
 
     public static MsgRecord BuildSendFile(string file, bool magic = false)
     {
+        file = Path.GetFullPath(file);
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            file = file[1..];
+        }
         return new()
         {
             Data = new()
             {
-                File = "file:///" + Path.GetFullPath(file),
+                File = "file:///" + file,
                 Magic = magic ? "1" : "0",
                 Cache = "1",
                 Proxy = "1"

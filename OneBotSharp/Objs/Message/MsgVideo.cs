@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace OneBotSharp.Objs.Message;
@@ -67,11 +68,16 @@ public record MsgVideo : MsgBase
 
     public static MsgVideo BuildFile(string file)
     {
+        file = Path.GetFullPath(file);
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            file = file[1..];
+        }
         return new()
         {
             Data = new()
             {
-                File = "file:///" + Path.GetFullPath(file)
+                File = "file:///" + file
             }
         };
     }
