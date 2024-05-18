@@ -399,12 +399,6 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
                 return;
             }
 
-            if (msg is IFullHttpResponse response)
-            {
-                throw new InvalidOperationException(
-                    $"Unexpected FullHttpResponse (getStatus={response.Status}, content={response.Content.ToString(Encoding.UTF8)})");
-            }
-
             if (msg is TextWebSocketFrame textFrame)
             {
                 string text = textFrame.Text();
