@@ -22,7 +22,7 @@ public record SendGroupMsg
     public bool AutoEscape { get; set; }
 
     /// <summary>
-    /// 发送消息
+    /// 创建消息
     /// </summary>
     /// <param name="group">群号</param>
     /// <param name="msg">消息</param>
