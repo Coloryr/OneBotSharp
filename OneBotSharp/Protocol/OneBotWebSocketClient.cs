@@ -70,6 +70,7 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
             WebSocketClientHandshakerFactory.NewHandshaker(
                     _uri, WebSocketVersion.V13, null, true, new DefaultHttpHeaders()));
 
+        _bootstrap.Option(ChannelOption.ConnectTimeout, Timeout);
         _bootstrap.Handler(new ActionChannelInitializer<IChannel>(channel =>
         {
             IChannelPipeline pipeline = channel.Pipeline;
