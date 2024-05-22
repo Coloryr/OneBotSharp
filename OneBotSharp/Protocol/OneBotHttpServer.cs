@@ -84,13 +84,10 @@ public class OneBotHttpServer : IOneBot<IRecvServer>, IRecvServer
             .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
             {
                 IChannelPipeline pipeline = channel.Pipeline;
+                pipeline.AddLast(new ReadTimeoutHandler(Timeout));
+                pipeline.AddLast(new WriteTimeoutHandler(Timeout));
                 pipeline.AddLast("codec", new HttpServerCodec(4096, 8192, 8192, false));
                 pipeline.AddLast("agg", new HttpObjectAggregator(65536));
-                if (Timeout is { } time)
-                {
-                    pipeline.AddLast(new ReadTimeoutHandler(time));
-                    pipeline.AddLast(new WriteTimeoutHandler(time));
-                }
                 pipeline.AddLast("handler", new OneBotServerHandler(this));
             }));
     }

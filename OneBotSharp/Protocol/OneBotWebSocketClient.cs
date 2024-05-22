@@ -73,11 +73,8 @@ public class OneBotWebSocketClient : IOneBot<ISendRecvPipe>, ISendRecvPipe
         _bootstrap.Handler(new ActionChannelInitializer<IChannel>(channel =>
         {
             IChannelPipeline pipeline = channel.Pipeline;
-            if (Timeout is { } time)
-            {
-                pipeline.AddLast(new ReadTimeoutHandler(time));
-                pipeline.AddLast(new WriteTimeoutHandler(time));
-            }
+            pipeline.AddLast(new ReadTimeoutHandler(Timeout));
+            pipeline.AddLast(new WriteTimeoutHandler(Timeout));
             pipeline.AddLast(
                 new HttpClientCodec(),
                 new HttpObjectAggregator(8192),

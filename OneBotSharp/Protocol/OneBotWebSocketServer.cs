@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using DotNetty.Buffers;
 using DotNetty.Codecs.Http;
 using DotNetty.Codecs.Http.WebSockets;
+using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
@@ -82,6 +83,8 @@ public class OneBotWebSocketServer : IOneBot<ISendRecvPipeServer>, ISendRecvPipe
             .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
             {
                 IChannelPipeline pipeline = channel.Pipeline;
+                pipeline.AddLast(new ReadTimeoutHandler(Timeout));
+                pipeline.AddLast(new WriteTimeoutHandler(Timeout));
                 pipeline.AddLast(new HttpServerCodec());
                 pipeline.AddLast(new HttpObjectAggregator(65536));
                 pipeline.AddLast(new WebSocketServerHandler(this));

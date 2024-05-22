@@ -19,12 +19,9 @@ public class OneBotHttpClient : IOneBot<ISendClient>, ISendClient
         }
         client = new()
         {
-            BaseAddress = new Uri(Url)
+            BaseAddress = new Uri(Url),
+            Timeout = Timeout
         };
-        if (Timeout is { } time)
-        {
-            client.Timeout = time;
-        }
         if (Key is { })
         {
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Key}");
