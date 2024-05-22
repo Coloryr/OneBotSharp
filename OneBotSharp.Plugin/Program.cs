@@ -28,7 +28,7 @@ internal class Program
 
     private static void Pipe_StateChange(ISendRecvPipe pipe, ISendRecvPipe.PipeState obj)
     {
-        
+
     }
 
     /// <summary>
